@@ -73,7 +73,7 @@ async function search(query) {
 }
 
 module.exports = {
-  prefixes: ['wb'],
+  prefixes: ['wb', 'wb3'],
   label: 'Wizard Battle 3',
   search,
 };
