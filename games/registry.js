@@ -24,8 +24,9 @@ const sts2 = require('./sts2');
 const fleshAndBlood = require('./flesh-and-blood');
 const onepiece = require('./onepiece');
 const wb = require('./wb');
+const fcg = require('./fcg');
 
-const modules = [mtg, ygo, pokemon, riftbound, sts2, fleshAndBlood, onepiece, wb];
+const modules = [mtg, ygo, pokemon, riftbound, sts2, fleshAndBlood, onepiece, wb, fcg];
 
 const registry = new Map();
 for (const mod of modules) {
