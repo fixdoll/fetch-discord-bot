@@ -31,7 +31,8 @@ A Discord bot that fetches cards from multiple TCGs' card pools by prefix.
 | `,rb`, `,riftbound` | Riftbound | [Riftcodex](https://riftcodex.com/) |
 | `,sts2`, `,spire2` | Slay the Spire 2 | [Spire Codex](https://spire-codex.com/developers) |
 | `,fab`, `,fnb` | Flesh and Blood | [goagain](https://api.goagain.dev/) |
-| `,op`, `,onepiece` | One Piece | [DotGG](https://dotgg.gg/api/) |
+| `,op`, `,onepiece` | One Piece | [OPTCG API](https://optcgapi.com/) |
+| `,lorcana`, `,lor` | Disney Lorcana | [Lorcast](https://lorcast.com/docs/api/cards) |
 
 Spire Codex's optional `SPIRECODEX_API_KEY` in `.env` just raises your rate
 limit - not required, and barely matters here since the bot caches the
@@ -85,13 +86,11 @@ No other file needs to change.
   a self-hostable project rather than a hosted service). Slay the Spire 2 is
   supported instead via Spire Codex, above.
 
-### A note on Flesh and Blood and One Piece
+### A note on One Piece and Flesh and Blood
 
-`games/flesh-and-blood.js` and `games/onepiece.js` were both built against their
-API's documented request/response shape, but neither's exact card-object field
-names were verified against a live populated response while writing them (the
-sandbox used to build this couldn't reach either API to test). Both check a
-couple of plausible field names defensively and fail safe (no image rather than
-a guessed-wrong URL), but it's worth running `,fab <a real card name>` and
-`,op <a real card name>` once and confirming the image actually shows up -
-adjust the field names in those files if not.
+Both took a couple of iterations to land on the right query param and image
+field (worth knowing if you're debugging either further): **One Piece** uses
+`card_name=` against [OPTCG API](https://optcgapi.com/), and **Flesh and
+Blood** (`games/flesh-and-blood.js`) checks a couple of possible image field
+names since goagain's data source publishes card data in two different
+shapes. Both are confirmed working as of the last test.
