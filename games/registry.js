@@ -10,6 +10,8 @@
 // and the bot pages through them with Prev/Next buttons. Games with a
 // single best match just return a one-element array. `description` is for
 // text-only cards with no image (e.g. wb) - it renders as the embed body.
+// It can also be combined with imageUrl (e.g. balatro) for a card that
+// has both an image and effect text to show.
 //
 // To add a new game: create games/<yourgame>.js implementing that shape,
 // then require() + list it below. Nothing else in the bot needs to change.
@@ -26,8 +28,9 @@ const onepiece = require('./onepiece');
 const wb = require('./wb');
 const fcg = require('./fcg');
 const lorcana = require('./lorcana');
+const balatro = require('./balatro');
 
-const modules = [mtg, ygo, pokemon, riftbound, sts2, fleshAndBlood, onepiece, wb, fcg, lorcana];
+const modules = [mtg, ygo, pokemon, riftbound, sts2, fleshAndBlood, onepiece, wb, fcg, lorcana, balatro];
 
 const registry = new Map();
 for (const mod of modules) {

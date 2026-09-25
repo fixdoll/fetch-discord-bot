@@ -33,6 +33,7 @@ A Discord bot that fetches cards from multiple TCGs' card pools by prefix.
 | `,fab`, `,fnb` | Flesh and Blood | [goagain](https://api.goagain.dev/) |
 | `,op`, `,onepiece` | One Piece | [OPTCG API](https://optcgapi.com/) |
 | `,lorcana`, `,lor` | Disney Lorcana | [Lorcast](https://lorcast.com/docs/api/cards) |
+| `,bal`, `,balatro` | Balatro (Jokers) | Your own Google Sheet — see setup below |
 
 Spire Codex's optional `SPIRECODEX_API_KEY` in `.env` just raises your rate
 limit - not required, and barely matters here since the bot caches the
@@ -94,3 +95,29 @@ field (worth knowing if you're debugging either further): **One Piece** uses
 Blood** (`games/flesh-and-blood.js`) checks a couple of possible image field
 names since goagain's data source publishes card data in two different
 shapes. Both are confirmed working as of the last test.
+
+## Balatro (Jokers) setup
+
+Balatro has no public card API (it's single-player, no official database),
+so this one reads from a Google Sheet you populate and maintain yourself -
+same pattern as a fully custom game (see `games/wb.js` for the general idea).
+
+1. Run `node scrape-balatro-jokers.js` (no `npm install` needed, it's a
+   standalone zero-dependency script) - it pulls every Joker's name, effect
+   text, and image URL from the Balatro Fandom wiki's API and writes
+   `balatro-jokers.csv`.
+2. Import that CSV into a Google Sheet: File → Import → Upload.
+3. Publish that sheet as CSV: File → Share → Publish to web → pick the
+   right tab → format: Comma-separated values (.csv) → Publish.
+4. Paste the resulting link into `games/balatro.js`, replacing the
+   `SHEET_CSV_URL` placeholder near the top of the file.
+
+The sheet needs exactly these column headers (which is what the scraper
+already outputs): `Name`, `Effect`, `Image URL`. Search matches on `Name`
+(exact match first, then substring), and results show both the image and
+the effect text together in the same embed.
+
+Since Balatro's Joker list barely changes (only with major game patches),
+the module caches the sheet for 5 minutes by default - lower `CACHE_TTL_MS`
+near the top of `games/balatro.js` while you're actively editing the sheet
+and want changes to show up immediately.
